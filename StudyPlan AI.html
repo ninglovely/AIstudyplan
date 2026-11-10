@@ -1,0 +1,213 @@
+<!doctype html>
+<html lang="th"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>StudyPlan AI</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Thai:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#f6f5f2;--card:#fff;--ink:#18181b;--mut:#6b6b73;--line:#e8e6e1;--a:#6d5efc;--b:#ff7a59;--c:#17c3a3;--y:#f5b73b;--r:#ef4d5e;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media(prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#0e0e11;--card:#17171b;--ink:#f4f4f5;--mut:#9a9aa3;--line:#2a2a31;color-scheme:dark}}
+:root[data-theme="dark"]{--bg:#0e0e11;--card:#17171b;--ink:#f4f4f5;--mut:#9a9aa3;--line:#2a2a31;color-scheme:dark}
+*{box-sizing:border-box}[hidden]{display:none!important}html{scroll-padding-top:env(safe-area-inset-top,0px)}
+body{margin:0;background:var(--bg);color:var(--ink);font:400 15px/1.6 "Noto Sans Thai",system-ui,sans-serif;min-height:100vh}
+body::before{content:"";position:fixed;inset:-20% -10% auto auto;width:520px;height:520px;background:radial-gradient(closest-side,rgba(109,94,252,.18),transparent);pointer-events:none;z-index:0}
+button,input,select,textarea{font:inherit;color:inherit}
+.btn{border:0;background:var(--ink);color:var(--bg);padding:9px 18px;border-radius:999px;cursor:pointer;font-weight:500}
+.btn.g{background:linear-gradient(135deg,var(--a),var(--b));color:#fff}.btn.o{background:transparent;color:var(--ink);border:1px solid var(--line)}
+.btn:active{transform:scale(.97)}
+input,select,textarea{width:100%;padding:10px 14px;border-radius:12px;border:1px solid var(--line);background:var(--card);outline:0}
+input:focus,select:focus,textarea:focus{border-color:var(--a);box-shadow:0 0 0 3px rgba(109,94,252,.18)}
+label{font-size:12px;color:var(--mut);display:block;margin:10px 0 4px}
+#auth{position:relative;z-index:1;min-height:100vh;display:grid;place-items:center;align-content:center;gap:28px;padding:24px}
+.box{width:100%;max-width:380px;background:color-mix(in srgb,var(--card) 82%,transparent);-webkit-backdrop-filter:blur(18px);backdrop-filter:blur(18px);border:1px solid var(--line);border-radius:24px;padding:32px;box-shadow:0 30px 60px -30px rgba(40,30,120,.3)}
+.logo{font-weight:600;font-size:20px;letter-spacing:-.01em}.logo i{font-style:normal;background:linear-gradient(135deg,var(--a),var(--b));-webkit-background-clip:text;background-clip:text;color:transparent}
+#app{position:relative;z-index:1;max-width:1100px;margin:0 auto;padding:20px}
+header{display:flex;align-items:center;gap:12px;flex-wrap:wrap;margin-bottom:20px}
+body::after{content:"";position:fixed;left:-8%;bottom:-14%;width:480px;height:480px;background:radial-gradient(closest-side,rgba(255,122,89,.16),transparent);pointer-events:none;z-index:0}
+.nb{position:relative;display:inline-flex;gap:2px;padding:6px;border-radius:999px;isolation:isolate;margin-left:auto;max-width:100%;--mx:50%;-webkit-user-select:none;user-select:none}
+.nb::before{content:"";position:absolute;inset:0;border-radius:inherit;z-index:-2;background:radial-gradient(130px 70px at var(--mx) 0,rgba(255,255,255,.6),transparent),color-mix(in srgb,var(--card) 38%,transparent);-webkit-backdrop-filter:blur(14px) saturate(1.6);backdrop-filter:blur(14px) saturate(1.6);box-shadow:inset 0 1px 1px rgba(255,255,255,.85),inset 0 0 0 1px rgba(255,255,255,.35),0 14px 34px -14px rgba(60,40,160,.5)}
+.rw{position:absolute;inset:0;border-radius:inherit;overflow:hidden;pointer-events:none;z-index:0}
+.rp{position:absolute;width:12px;height:12px;margin:-6px;border-radius:50%;border:1.5px solid rgba(255,255,255,.9);animation:rp .9s ease-out forwards}
+@keyframes rp{to{transform:scale(16);opacity:0}}
+.nd{position:absolute;top:6px;bottom:6px;left:0;width:0;border-radius:999px;z-index:-1;pointer-events:none;will-change:transform,width;background:radial-gradient(120% 140% at 30% 0%,rgba(255,255,255,.8),rgba(255,255,255,0) 55%),linear-gradient(135deg,rgba(109,94,252,.3),rgba(255,122,89,.3));box-shadow:inset 0 1px 1px rgba(255,255,255,.95),inset 0 -2px 6px rgba(109,94,252,.25),inset 0 0 0 1px rgba(255,255,255,.55),0 6px 16px -6px rgba(80,60,200,.5)}
+.ni{position:relative;z-index:1;display:inline-flex;align-items:center;gap:8px;height:42px;padding:0 16px;border:0;border-radius:999px;background:none;color:var(--mut);cursor:pointer;font-weight:500;font-size:14px;line-height:1;white-space:nowrap;transition:color .25s}
+.ni:hover,.ni.on{color:var(--ink)}.ni:focus-visible{outline:2px solid var(--a);outline-offset:2px}
+.ic{display:inline-flex}.ic svg{width:18px;height:18px;transition:transform .45s cubic-bezier(.3,1.6,.5,1)}.ni.on .ic svg{transform:translateY(-1px) scale(1.08)}
+.fx-pop svg{animation:nvPop .5s cubic-bezier(.3,1.6,.5,1)}.fx-spin svg{animation:nvSpin 1s cubic-bezier(.2,.75,.25,1)}.fx-glow svg{animation:nvHop .8s cubic-bezier(.3,1.4,.5,1)}.fx-drop svg{animation:nvDrop .95s cubic-bezier(.4,0,.3,1)}.fx-wave svg{animation:nvWave .9s ease-in-out}
+@keyframes nvPop{0%{transform:scale(.72)}60%{transform:scale(1.2)}}
+@keyframes nvSpin{to{transform:perspective(80px) rotateY(360deg)}}
+@keyframes nvHop{30%{transform:translateY(-6px) scale(1.04,.96)}55%{transform:scale(1.12,.88)}75%{transform:translateY(-2px)}}
+@keyframes nvDrop{26%{transform:translateY(-12px) scale(.88,1.12)}46%{transform:translateY(3px) scale(1.3,.68)}62%{transform:translateY(-3px) scale(.92,1.08)}}
+@keyframes nvWave{20%{transform:rotate(-15deg)}40%{transform:rotate(12deg)}60%{transform:rotate(-8deg)}80%{transform:rotate(4deg)}}
+@media(max-width:560px){.ni{padding:0 13px}.lb{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)}}
+@keyframes gradient-blob-1{0%,100%{transform:translate(0,0) scale(1)}50%{transform:translate(5%,5%) scale(1.1)}}
+@keyframes gradient-blob-2{0%,100%{transform:translate(0,0) scale(1)}50%{transform:translate(-5%,5%) scale(1.05)}}
+@keyframes gradient-blob-3{0%,100%{transform:translate(0,0) scale(1)}50%{transform:translate(5%,-5%) scale(1.08)}}
+.blobs{position:fixed;inset:0;overflow:hidden;pointer-events:none;z-index:0}
+.blobs i{position:absolute;border-radius:50%;filter:blur(80px);opacity:.3}
+.blobs i:nth-child(1){width:46vmax;height:46vmax;left:-10vmax;top:-12vmax;background:var(--a);animation:gradient-blob-1 14s ease-in-out infinite}
+.blobs i:nth-child(2){width:40vmax;height:40vmax;right:-8vmax;top:18%;background:var(--b);animation:gradient-blob-2 17s ease-in-out infinite}
+.blobs i:nth-child(3){width:44vmax;height:44vmax;left:28%;bottom:-18vmax;background:var(--c);animation:gradient-blob-3 20s ease-in-out infinite}
+.hero{text-align:center;max-width:560px}
+.bdg{display:inline-flex;align-items:center;gap:6px;border:1px solid var(--line);background:color-mix(in srgb,var(--card) 70%,transparent);-webkit-backdrop-filter:blur(8px);backdrop-filter:blur(8px);border-radius:999px;padding:4px 14px;font-size:12px;font-weight:600}
+.hero h1{font-size:clamp(30px,6vw,48px);line-height:1.2;margin:14px 0 8px;font-weight:600;letter-spacing:-.02em}
+.hero h1 em{font-style:normal;background:linear-gradient(135deg,var(--a),var(--b));-webkit-background-clip:text;background-clip:text;color:transparent}
+.av{display:flex;justify-content:center;align-items:center;gap:10px;margin:14px 0 4px;font-size:13px;color:var(--mut)}
+.av .st{display:flex;padding-left:10px}
+.av .c{width:34px;height:34px;border-radius:50%;display:grid;place-items:center;font-size:11px;font-weight:600;color:#fff;border:2px solid var(--bg);margin-left:-10px}
+.pl{display:flex;flex-wrap:wrap;justify-content:center;gap:6px;margin-top:12px}.pl .bdg{font-weight:500;color:var(--mut)}
+@media(prefers-reduced-motion:reduce){.ic svg{animation:none!important}.rp{display:none}.blobs i{animation:none!important}}
+
+
+.card{background:var(--card);border:1px solid var(--line);border-radius:22px;padding:22px}
+h2{font-size:22px;margin:0 0 4px;font-weight:600;letter-spacing:-.01em}.sub{color:var(--mut);margin:0 0 18px;font-size:14px}
+.grid{display:grid;gap:14px}.g2{grid-template-columns:repeat(auto-fit,minmax(260px,1fr))}
+.cal{display:grid;grid-template-columns:repeat(7,1fr);gap:6px}
+.cal .h{text-align:center;font-size:12px;color:var(--mut)}
+.day{min-height:76px;border:1px solid var(--line);border-radius:14px;padding:6px;cursor:pointer;font-size:12px;overflow:hidden;background:var(--card)}
+.day:hover{border-color:var(--a)}.day.t{background:linear-gradient(160deg,rgba(109,94,252,.12),rgba(255,122,89,.1))}.day.x{opacity:.35}.day.s{border-color:var(--a);box-shadow:0 0 0 2px rgba(109,94,252,.25)}
+.chip{display:block;font-size:10.5px;padding:1px 6px;border-radius:6px;margin-top:2px;color:#fff;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.hrs{font-size:10.5px;color:var(--mut)}
+.row{display:flex;gap:10px;align-items:center;padding:10px 0;border-bottom:1px solid var(--line)}.row:last-child{border:0}
+.dot{width:10px;height:10px;border-radius:50%;flex:none}
+.bar{height:12px;border-radius:99px;background:var(--line);overflow:hidden}.bar i{display:block;height:100%;border-radius:99px}
+.tag{font-size:11px;padding:2px 10px;border-radius:99px;background:rgba(109,94,252,.12);color:var(--a)}
+.warn{background:rgba(239,77,94,.1);color:var(--r);border-radius:14px;padding:12px 16px;margin-bottom:10px}
+.ok{background:rgba(23,195,163,.1);color:var(--c);border-radius:14px;padding:12px 16px}
+.folders{display:grid;grid-template-columns:repeat(auto-fill,minmax(290px,1fr));gap:30px 20px;padding-top:10px;justify-items:center}
+/* glass folder (adapted from 21st.dev glass-folder-cards) */
+.fd{position:relative;width:280px;height:200px;margin-top:86px;--hg:0deg;--lf:0px;--sp:0px;--st:12px;--fan:0deg}
+.fd:hover{--hg:-10deg;--lf:-30px;--sp:8px;--fan:1.4deg}.fd.o{--hg:-22deg;--lf:-84px;--sp:36px;--st:26px;--fan:4deg}
+.bk{position:absolute;inset:0;border-radius:20px;background:linear-gradient(135deg,hsl(var(--h) 85% 74%),hsl(calc(var(--h) + 45) 85% 62%) 60%,hsl(calc(var(--h) + 90) 70% 46%));box-shadow:0 24px 40px -18px hsl(var(--h) 70% 30%/.55)}
+.bk::before{content:"";position:absolute;left:0;top:-16px;width:120px;height:34px;border-radius:16px 16px 0 0;background:hsl(var(--h) 85% 72%)}
+.fs{position:absolute;inset:0;z-index:2;pointer-events:none;clip-path:inset(-300px -60px 8px -60px)}
+.sh{all:unset;box-sizing:border-box;position:absolute;left:22px;right:22px;top:32px;height:140px;border-radius:13px;background:#fff;color:#18181b;padding:11px 13px;cursor:pointer;pointer-events:auto;transform-origin:50% 100%;box-shadow:0 8px 20px -8px rgba(0,0,0,.3);transform:translate(calc(var(--s)*var(--sp)),calc(var(--lf) - var(--d)*var(--st)))rotate(calc(var(--s)*var(--fan)));transition:transform .7s cubic-bezier(.34,1.36,.5,1);display:block;line-height:1.35}
+.fd:not(.o) .sh{pointer-events:none}.sh b{display:block;font-size:13px;font-weight:600;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.sh small{font-size:11px;color:#777}
+.sh .ln{display:block;height:5px;border-radius:3px;background:#0001;margin-top:9px}
+.fr{position:absolute;left:0;right:0;top:50px;bottom:0;z-index:3;border-radius:20px;border:1.5px solid rgba(255,255,255,.7);-webkit-backdrop-filter:blur(18px) saturate(1.5);backdrop-filter:blur(18px) saturate(1.5);background:linear-gradient(180deg,rgba(255,255,255,.2),rgba(255,255,255,.82));transform-origin:50% 100%;transform:perspective(700px) rotateX(var(--hg));transition:transform .75s cubic-bezier(.34,1.36,.5,1);cursor:pointer;display:flex;flex-direction:column;justify-content:flex-end;padding:20px 22px;color:#18181b}
+.fr b{font-size:17px;font-weight:600}.fr small{font-family:ui-monospace,monospace;font-size:11.5px;color:#555}
+.fr:focus-visible{outline:2px solid var(--a)}
+.modal{position:fixed;inset:0;background:rgba(10,10,20,.45);display:none;place-items:center;padding:20px;z-index:50;-webkit-backdrop-filter:blur(6px);backdrop-filter:blur(6px)}
+.modal.on{display:grid}.modal .card{max-width:460px;width:100%;max-height:88vh;overflow:auto}
+.free{display:grid;grid-template-columns:repeat(7,1fr);gap:6px}.free input{padding:8px 4px;text-align:center}
+@media(prefers-reduced-motion:reduce){*{transition:none!important}}
+</style></head><body>
+<div class="blobs" aria-hidden="true"><i></i><i></i><i></i></div><div id="auth"></div><div id="app" hidden></div><div class="modal" id="md"><div class="card" id="mc"></div></div>
+<script>
+const $=s=>document.querySelector(s),TH=['อา','จ','อ','พ','พฤ','ศ','ส'],MN=['มกราคม','กุมภาพันธ์','มีนาคม','เมษายน','พฤษภาคม','มิถุนายน','กรกฎาคม','สิงหาคม','กันยายน','ตุลาคม','พฤศจิกายน','ธันวาคม'];
+const esc=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const MEM={};const ld=(k,d)=>{try{const v=localStorage.getItem(k);return v?JSON.parse(v):(k in MEM?MEM[k]:d)}catch(e){return k in MEM?MEM[k]:d}};
+const sv=(k,v)=>{MEM[k]=v;try{localStorage.setItem(k,JSON.stringify(v))}catch(e){}};
+const iso=d=>d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0');
+const dt=s=>new Date(s+'T12:00:00'),add=(s,n)=>{const d=dt(s);d.setDate(d.getDate()+n);return iso(d)};
+const fmt=s=>{const d=dt(s),m=mn()[d.getMonth()];return L=='en'?m.slice(0,3)+' '+d.getDate():d.getDate()+' '+m.slice(0,3)+(m.length>5?'.':'')};
+const today=()=>iso(new Date()),hue=s=>{let h=0;for(const c of s)h=(h*31+c.charCodeAt(0))%360;return h};
+const col=s=>`hsl(${hue(s)} 70% 52%)`;
+let me=null,D=null,view='cal',cm=new Date(),sel=today();
+const save=()=>sv('sp_d_'+me,D);
+/* ---------- i18n TH / EN ---------- */
+let L=ld('sp_lang','th');document.documentElement.lang=L;
+const LOC=()=>L=='en'?'en-US':'th-TH',MNE=['January','February','March','April','May','June','July','August','September','October','November','December'],WD=()=>L=='en'?['Su','Mo','Tu','We','Th','Fr','Sa']:TH,mn=()=>L=='en'?MNE:MN;
+const E={'ปฏิทิน':'Calendar','งานของฉัน':'My tasks','เพิ่มงาน':'Add task','ภาระงาน':'Workload','แผนทำงาน':'Plan','ออก':'Log out','ปิด':'Close','ลบ':'Delete','ทำเสร็จแล้ว':'Mark done','ยกเลิกเสร็จ':'Undo done','วิชา':'Course','วันส่ง':'Due date','ชื่องาน':'Task name','อีเมล':'Email','อัปโหลดไฟล์':'Upload file','ข้อมูลงาน':'Task details','ใช้เวลา (ชม.)':'Time needed (h)','ความยาก (1-5)':'Difficulty (1-5)','ข้อกำหนดสำคัญ':'Key requirements','บันทึกและจัดตาราง':'Save & schedule','เพิ่มงานด่วน':'Add urgent task','ไม่ระบุวิชา':'Unspecified'};
+const S=[['เกิดข้อผิดพลาด: ','Error: '],['✨ เปิดให้ใช้ก่อนใคร','✨ Early access'],['วางแผนงานส่งให้ทัน','Hit every deadline'],['โดยไม่ต้องเครียด','without the stress'],['AI ช่วยอ่านโจทย์ ประเมินภาระงาน และจัดตารางให้คุณ','AI reads your briefs, predicts your workload and builds your schedule'],['สร้างมาเพื่อนักศึกษา','Built for students'],['อ่านโจทย์ด้วย AI','AI brief reader'],['ทำนายภาระงาน','Workload predictor'],['จัดตารางอัจฉริยะ','Smart scheduler'],['จัดแผนใหม่ทันที','Instant replanning'],['สร้างบัญชีเพื่อเริ่มวางแผนงานส่ง','Create an account to start planning your deadlines'],['เข้าสู่ระบบเพื่อดูแผนของคุณ','Sign in to see your plan'],['รหัสผ่าน (อย่างน้อย 8 ตัว)','Password (at least 8 characters)'],['สมัครสมาชิก','Sign up'],['เข้าสู่ระบบ','Sign in'],['มีบัญชีแล้ว?','Already have an account?'],['ยังไม่มีบัญชี?','No account yet?'],['เดโมนี้เก็บข้อมูลในเบราว์เซอร์ของคุณเท่านั้น (รหัสผ่านถูกแฮชก่อนเก็บ)','This demo stores data only in your browser (passwords are hashed before saving).'],['อีเมลนี้สมัครไว้แล้ว กรุณาเข้าสู่ระบบแทน','This email is already registered - please sign in instead'],['อีเมลหรือรหัสผ่านไม่ถูกต้อง','Incorrect email or password'],
+['ไม่มีงานที่จัดไว้ในวันนี้','Nothing scheduled today'],['ส่งวันนี้: ','Due today: '],['💡 พักสั้น ๆ 10 นาทีทุกชั่วโมง','💡 Take a 10-minute break every hour'],
+['เลื่อนเมาส์เพื่อเอียงกระจก · คลิกเพื่อเปิดแฟ้ม · คลิกงานเพื่อดูรายละเอียด','Hover to tilt the glass · click to open the folder · click a task for details'],['ยังไม่มีงาน — ไปที่ “เพิ่มงาน”','No tasks yet - go to “Add task”'],['เปิดแฟ้ม ','Open folder '],[' งาน',' tasks'],['ส่ง ','due '],['ชม.','h'],['ความยาก','difficulty'],
+['AI อ่านรายละเอียดงาน','AI reads your assignment'],['วางข้อความโจทย์ หรืออัปโหลดไฟล์ .txt/.md ที่ได้รับอนุญาตให้ใช้ AI — ระบบดึงชื่องาน วิชา วันส่ง และข้อกำหนดให้','Paste the assignment text or upload a .txt/.md file you are allowed to use with AI - the system extracts the task name, course, due date and requirements.'],['ดึงข้อมูล','Extract'],['ตรวจสอบและแก้ไขก่อนบันทึก','Review and edit before saving'],['วิชา: การตลาดดิจิทัล','Course: Digital Marketing'],['งาน: รายงานวิเคราะห์แบรนด์','Task: Brand analysis report'],['กำหนดส่ง 20 พ.ย. 2569','Due 20 Nov 2026'],['- ความยาว 10 หน้า','- 10 pages'],['- อ้างอิง APA','- APA references'],['กรุณากรอกชื่องานและวันส่ง','Please enter the task name and due date'],
+['ภาระงานรายสัปดาห์','Weekly workload'],['เปรียบเทียบชั่วโมงที่ต้องใช้ (ถ่วงด้วยความยาก) กับเวลาว่างของคุณ','Compares hours needed (weighted by difficulty) with your free time'],['ภาระงานอยู่ในระดับที่จัดการได้ 🎉','Your workload looks manageable 🎉'],['⚠ สัปดาห์ ','⚠ Week of '],[' ภาระสูงผิดปกติ (',' unusually heavy load ('],['% ของเวลาว่าง) — ควรเริ่มเตรียม ','% of free time) - start preparing '],
+['↻ จัดใหม่','↻ Replan'],['แบ่งงานเป็นขั้นตอน เว้นเวลา 20% สำหรับเหตุไม่คาดคิด และพักทุกชั่วโมง','Tasks are split into steps, with a 20% buffer for surprises and a break every hour'],['ยังไม่มีแผน','No plan yet'],['ทำไมเรียงแบบนี้','Why this order'],['AI อธิบายลำดับความสำคัญ','AI explains the priorities'],['เวลาว่างต่อวัน (ชม.)','Free hours per day (h)'],['แก้ไขแล้วกด “จัดใหม่”','Edit, then press “Replan”'],['🚨 มีงานด่วน?','🚨 Something urgent?'],['เพิ่มงานแล้วระบบจะจัดใหม่ทั้งหมดให้','Add the task and the system replans everything'],
+['ทำความเข้าใจโจทย์และค้นคว้า','Understand the brief & research'],['ร่างโครงและเนื้อหา','Draft outline & content'],['ลงมือทำหลัก / ปรับปรุง','Main work / refine'],['ตรวจทานก่อนส่ง','Final review'],
+['ส่งอีก','due in'],[' วัน เหลือ ',' days · '],[' ชม. ความยาก ',' h left · difficulty '],[' ⚠ เวลาว่างไม่พอ ควรเพิ่มเวลาว่างหรือขอเลื่อน',' ⚠ not enough free time - add free hours or ask for an extension'],['จัดใหม่เมื่อ ','Replanned at '],[' — เก็บงานที่ทำแล้ว ล้างบล็อกเดิม ',' — kept finished work, cleared '],[' รายการ แล้วเรียงตามกำหนดส่งก่อน ความยากรองลงมา',' old blocks, then ordered by due date first, difficulty second']].sort((a,b)=>b[0].length-a[0].length);
+function tr(s){if(L!='en')return s;const t=s.trim(),k=E[t];if(k)return s.replace(t,k);let r=s;for(const[a,b]of S)if(r.includes(a))r=r.split(a).join(b);return r}
+function walk(n){if(L!='en')return;if(n.nodeType==3){const v=tr(n.nodeValue);if(v!==n.nodeValue)n.nodeValue=v;return}if(n.nodeType!=1||n.tagName=='SCRIPT'||n.tagName=='STYLE')return;['placeholder','aria-label','title'].forEach(a=>{const v=n.getAttribute(a);if(v){const w=tr(v);if(w!==v)n.setAttribute(a,w)}});n.childNodes.forEach(walk)}
+new MutationObserver(ms=>ms.forEach(m=>m.addedNodes.forEach(walk))).observe(document.body,{childList:true,subtree:true});
+function setL(reg){L=L=='en'?'th':'en';try{localStorage.setItem('sp_lang',L)}catch(e){}document.documentElement.lang=L;$('#md').classList.remove('on');if(!$('#app').hidden){ds.on=0;shell();go(view)}else authUI(!!reg)}
+
+/* ---------- login ---------- */
+const sha=async s=>{try{return [...new Uint8Array(await crypto.subtle.digest('SHA-256',new TextEncoder().encode('sp:'+s)))].map(b=>b.toString(16).padStart(2,'0')).join('')}catch(x){let h=5381;for(const c of 'sp:'+s)h=(h*33^c.charCodeAt(0))>>>0;return 'f'+h.toString(16)}};
+const sha_old=async s=>[...new Uint8Array(await crypto.subtle.digest('SHA-256',new TextEncoder().encode('sp:'+s)))].map(b=>b.toString(16).padStart(2,'0')).join('');
+function authUI(reg){$('#app').hidden=true;$('#auth').hidden=false;$('#auth').innerHTML=`<div class="hero"><span class="bdg">✨ เปิดให้ใช้ก่อนใคร</span><h1>วางแผนงานส่งให้ทัน<br><em>โดยไม่ต้องเครียด</em></h1><p class="sub">AI ช่วยอ่านโจทย์ ประเมินภาระงาน และจัดตารางให้คุณ</p><div class="av"><span>สร้างมาเพื่อนักศึกษา</span></div><div class="pl"><span class="bdg">อ่านโจทย์ด้วย AI</span><span class="bdg">ทำนายภาระงาน</span><span class="bdg">จัดตารางอัจฉริยะ</span><span class="bdg">จัดแผนใหม่ทันที</span></div></div><form class="box" onsubmit="return doAuth(event,${reg})"><button type="button" class="btn o" style="float:right;padding:4px 12px" onclick="setL(${reg})" aria-label="Language">🌐 ${L=='en'?'ไทย':'EN'}</button><div class="logo">StudyPlan <i>AI</i></div><p class="sub" style="margin-top:6px">${reg?'สร้างบัญชีเพื่อเริ่มวางแผนงานส่ง':'เข้าสู่ระบบเพื่อดูแผนของคุณ'}</p><label>อีเมล</label><input type="email" id="em" required autocomplete="email"><label>รหัสผ่าน (อย่างน้อย 8 ตัว)</label><input type="password" id="pw" minlength="8" required autocomplete="${reg?'new-password':'current-password'}"><div id="er" style="color:var(--r);font-size:13px;min-height:22px;margin-top:8px"></div><button class="btn g" style="width:100%">${reg?'สมัครสมาชิก':'เข้าสู่ระบบ'}</button><p class="sub" style="text-align:center;margin:16px 0 0">${reg?'มีบัญชีแล้ว?':'ยังไม่มีบัญชี?'} <a href="#" onclick="authUI(${!reg});return false" style="color:var(--a)">${reg?'เข้าสู่ระบบ':'สมัครสมาชิก'}</a></p><p class="sub" style="font-size:11px;margin-top:12px">เดโมนี้เก็บข้อมูลในเบราว์เซอร์ของคุณเท่านั้น (รหัสผ่านถูกแฮชก่อนเก็บ)</p></form>`}
+async function doAuth(e,reg){try{return await doAuth0(e,reg)}catch(x){$('#er').textContent='เกิดข้อผิดพลาด: '+(x&&x.message||x);return false}}
+async function doAuth0(e,reg){e.preventDefault();const em=$('#em').value.trim().toLowerCase(),h=await sha(em+$('#pw').value),u=ld('sp_users',{});
+ if(reg){if(u[em])return $('#er').textContent='อีเมลนี้สมัครไว้แล้ว กรุณาเข้าสู่ระบบแทน',false;u[em]=h;sv('sp_users',u)}else if(u[em]!==h)return $('#er').textContent='อีเมลหรือรหัสผ่านไม่ถูกต้อง',false;
+ sv('sp_me',em);boot(em);return false}
+function boot(em){me=em;D=ld('sp_d_'+em,null);if(!D){const t=today();D={tasks:[{id:1,title:'รายงานวิเคราะห์กรณีศึกษา',subject:'การตลาดดิจิทัล',due:add(t,9),hours:8,diff:4,notes:'ความยาว 10 หน้า'},{id:2,title:'แบบฝึกหัดบทที่ 5',subject:'แคลคูลัส 2',due:add(t,4),hours:3,diff:3,notes:''},{id:3,title:'พรีเซนต์กลุ่ม',subject:'การตลาดดิจิทัล',due:add(t,16),hours:6,diff:3,notes:''}],plan:[],free:[3,2,3,2,3,2,4],explain:[],n:4};schedule(false)}
+ $('#auth').hidden=true;$('#app').hidden=false;shell();go('cal')}
+const logout=()=>{try{localStorage.removeItem('sp_me')}catch(e){}authUI(false)};
+
+/* ---------- AI 3: smart scheduler / AI 4: replanning ---------- */
+const STEPS=[['ทำความเข้าใจโจทย์และค้นคว้า',.25],['ร่างโครงและเนื้อหา',.4],['ลงมือทำหลัก / ปรับปรุง',.25],['ตรวจทานก่อนส่ง',.1]];
+function schedule(explain){const T=today(),keep=D.plan.filter(b=>b.done||b.date<T),used={};keep.forEach(b=>used[b.date]=(used[b.date]||0)+b.h);
+ const cap=d=>Math.max(0,D.free[dt(d).getDay()]*.8-(used[d]||0)); /* เผื่อ 20% สำหรับเหตุไม่คาดคิด + พัก */
+ const ts=D.tasks.filter(t=>!t.done).map(t=>({...t,rem:Math.max(0,t.hours-keep.filter(b=>b.tid==t.id).reduce((s,b)=>s+b.h,0))})).filter(t=>t.rem>0).sort((a,b)=>a.due.localeCompare(b.due)||b.diff-a.diff);
+ const out=[],ex=[];
+ ts.forEach((t,i)=>{let d=T,short=false;const last=t.due>T?add(t.due,-1):T,days=Math.round((dt(t.due)-dt(T))/864e5);
+  STEPS.forEach(([name,r])=>{let need=Math.max(.5,Math.round(t.rem*r*4)/4);while(need>.01){if(d>last){short=true;break}const c=Math.min(Math.round(cap(d)*4)/4,need,1.5);if(c<.25){d=add(d,1);continue}
+   out.push({id:Math.random().toString(36).slice(2),tid:t.id,date:d,h:c,step:name,done:false});used[d]=(used[d]||0)+c;need-=c}});
+  ex.push(`${i+1}. ${t.title} (${t.subject}) — ส่งอีก ${days} วัน เหลือ ${t.rem.toFixed(1)} ชม. ความยาก ${t.diff}/5${short?' ⚠ เวลาว่างไม่พอ ควรเพิ่มเวลาว่างหรือขอเลื่อน':''}`)});
+ D.plan=[...keep,...out];if(explain!==false)D.explain=ex;save()}
+function replan(){const before=D.plan.filter(b=>!b.done&&b.date>=today()).length;schedule(true);D.explain.unshift(`จัดใหม่เมื่อ ${new Date().toLocaleTimeString(LOC(),{hour:'2-digit',minute:'2-digit'})} — เก็บงานที่ทำแล้ว ล้างบล็อกเดิม ${before} รายการ แล้วเรียงตามกำหนดส่งก่อน ความยากรองลงมา`);save();go('plan')}
+
+/* ---------- AI 2: workload predictor ---------- */
+function loadWeeks(){const T=today(),d0=dt(T),mon=add(T,-((d0.getDay()+6)%7)),W=[];for(let w=0;w<6;w++)W.push({s:add(mon,w*7),dem:0,cap:0,tasks:{}});
+ for(const W_ of W)for(let i=0;i<7;i++){const d=add(W_.s,i);if(d>=T)W_.cap+=D.free[dt(d).getDay()]}
+ D.tasks.filter(t=>!t.done).forEach(t=>{const done=D.plan.filter(b=>b.tid==t.id&&b.done).reduce((s,b)=>s+b.h,0),rem=Math.max(0,t.hours-done),n=Math.max(1,Math.round((dt(t.due)-dt(T))/864e5)),wt=1+(t.diff-3)*.15;
+  for(let i=0;i<n;i++){const d=add(T,i),w=W.find(x=>d>=x.s&&d<add(x.s,7));if(w){w.dem+=rem/n*wt;w.tasks[t.title]=1}}});
+ return W}
+
+/* ---------- AI 1: extractor ---------- */
+function extract(txt){const ms=MN.map((m,i)=>m+'|'+['ม\\.ค\\.','ก\\.พ\\.','มี\\.ค\\.','เม\\.ย\\.','พ\\.ค\\.','มิ\\.ย\\.','ก\\.ค\\.','ส\\.ค\\.','ก\\.ย\\.','ต\\.ค\\.','พ\\.ย\\.','ธ\\.ค\\.'][i]).join('|');
+ let due='',m;const yr=y=>{y=+y;return y>2400?y-543:y<100?y+2000:y};
+ if(m=txt.match(new RegExp('(\\d{1,2})\\s*('+ms+')\\s*(\\d{2,4})?'))){const mi=MN.findIndex((n,i)=>new RegExp('^('+ms.split('|').slice(i*2,i*2+2).join('|')+')$').test(m[2]));const y=m[3]?yr(m[3]):new Date().getFullYear();if(mi>=0)due=y+'-'+String(mi+1).padStart(2,'0')+'-'+String(m[1]).padStart(2,'0')}
+ if(!due&&(m=txt.match(/(\d{1,2})\s*(Jan|Feb|Mar|Apr|May|Jun|Jul|Aug|Sep|Oct|Nov|Dec)[a-z]*\.?,?\s*(\d{4})?/i))){const mi=['jan','feb','mar','apr','may','jun','jul','aug','sep','oct','nov','dec'].indexOf(m[2].toLowerCase());due=(m[3]||new Date().getFullYear())+'-'+String(mi+1).padStart(2,'0')+'-'+String(m[1]).padStart(2,'0')}
+ if(!due&&(m=txt.match(/(\d{1,2})[\/\-](\d{1,2})[\/\-](\d{2,4})/)))due=yr(m[3])+'-'+m[2].padStart(2,'0')+'-'+m[1].padStart(2,'0');
+ const subj=(txt.match(/(?:วิชา|Course|course|Subject|subject)\s*[:：]?\s*([^\n,;]+)/)||txt.match(/\b([A-Z]{2,4}\s?\d{3,4}[^\n]*)/)||[])[1]||'',
+ title=(txt.match(/(?:ชื่องาน|งาน|หัวข้อ|Task|task|Title|Assignment)\s*[:：]\s*([^\n]+)/)||[])[1]||txt.split('\n').find(l=>l.trim())||'',
+ notes=txt.split('\n').filter(l=>/^\s*([-•*]|\d+[.)])/.test(l)).map(l=>l.trim()).join('\n'),
+ pg=txt.match(/(\d+)\s*(?:หน้า|pages?)/),hr=txt.match(/(\d+)\s*(?:ชั่วโมง|ชม|hours?|hrs?)/);
+ return{title:title.trim().slice(0,80),subject:subj.trim(),due,hours:hr?+hr[1]:pg?Math.max(2,Math.round(pg[1]*1.2)):4,notes}}
+
+/* ---------- UI ---------- */
+function shell(){$('#app').innerHTML=`<header><div class="logo">StudyPlan <i>AI</i></div><nav id="nv" class="nb" aria-label="เมนูหลัก"><span class="rw" id="rw"></span><span class="nd" id="nd" aria-hidden="true"></span>${NAV.map(([k,v,ic,fx])=>`<button class="ni" data-k="${k}" data-fx="${fx}" aria-label="${v}" onclick="go('${k}',1)"><span class="ic">${ic}</span><span class="lb">${v}</span></button>`).join('')}</nav><button class="btn o" onclick="setL()" aria-label="Language">🌐 ${L=='en'?'ไทย':'EN'}</button><button class="btn o" onclick="logout()">ออก</button></header><main id="v"></main>`}
+/* liquid glass nav (adapted from 21st.dev liquid-glass-navbar) */
+const SV=d=>`<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">${d}</svg>`;
+const NAV=[['cal','ปฏิทิน',SV('<rect x="3.5" y="5" width="17" height="15.5" rx="3"/><path d="M3.5 10h17M8 3v4M16 3v4"/>'),'glow'],['tasks','งานของฉัน',SV('<path d="M3.5 8A2.5 2.5 0 0 1 6 5.5h3.5l2 2.5H18a2.5 2.5 0 0 1 2.5 2.5v7A2.5 2.5 0 0 1 18 20H6a2.5 2.5 0 0 1-2.5-2.5Z"/>'),'pop'],['add','เพิ่มงาน',SV('<path d="M12 5v14M5 12h14"/>'),'spin'],['load','ภาระงาน',SV('<path d="M5 20V11M12 20V5M19 20v-6"/>'),'drop'],['plan','แผนทำงาน',SV('<path d="M12 3.5l1.8 4.7 4.7 1.8-4.7 1.8L12 16.5l-1.8-4.7L5.5 10l4.7-1.8ZM18.5 15.5l.8 2 2 .8-2 .8-.8 2-.8-2-2-.8 2-.8Z"/>'),'wave']];
+const ds={L:0,R:0,vl:0,vr:0,tl:0,tr:0,sy:1,vs:0,on:0,raf:0};let lt=0;
+function paint(){const d=$('#nd');if(d){d.style.transform='translateX('+ds.L+'px) scaleY('+ds.sy+')';d.style.width=Math.max(24,ds.R-ds.L)+'px'}}
+function tick(t){const dt=Math.min((t-(lt||t))/1000,1/30);lt=t;const rt=ds.tl+ds.tr>ds.L+ds.R,a=rt?[72,13,210,25]:[210,25,72,13];
+ ds.vl+=(a[0]*(ds.tl-ds.L)-a[1]*ds.vl)*dt;ds.vr+=(a[2]*(ds.tr-ds.R)-a[3]*ds.vr)*dt;ds.L+=ds.vl*dt;ds.R+=ds.vr*dt;
+ const st=1-.2*Math.min(Math.max(Math.abs(ds.vl),Math.abs(ds.vr))/1500,1);ds.vs+=(280*(st-ds.sy)-9*ds.vs)*dt;ds.sy+=ds.vs*dt;paint();
+ if(Math.abs(ds.tl-ds.L)<.3&&Math.abs(ds.tr-ds.R)<.3&&Math.abs(ds.vl)<3&&Math.abs(ds.vr)<3&&Math.abs(ds.sy-1)<.002&&Math.abs(ds.vs)<.02){ds.L=ds.tl;ds.R=ds.tr;ds.sy=1;ds.raf=0;lt=0;paint()}else ds.raf=requestAnimationFrame(tick)}
+function dropTo(k,snap){const b=document.querySelector('#nv [data-k="'+k+'"]');if(!b)return;if(!b.offsetWidth){ds.on=0;return}ds.tl=b.offsetLeft;ds.tr=ds.tl+b.offsetWidth;
+ if(snap||!ds.on||matchMedia('(prefers-reduced-motion: reduce)').matches){ds.L=ds.tl;ds.R=ds.tr;ds.vl=ds.vr=0;ds.sy=1;ds.on=1;paint();return}if(!ds.raf)ds.raf=requestAnimationFrame(tick)}
+addEventListener('resize',()=>dropTo(view,1));document.fonts&&document.fonts.ready.then(()=>dropTo(view,1));
+document.addEventListener('pointermove',e=>{const n=e.target.closest&&e.target.closest('#nv');if(n)n.style.setProperty('--mx',e.clientX-n.getBoundingClientRect().left+'px')});
+document.addEventListener('pointerdown',e=>{const n=e.target.closest&&e.target.closest('#nv'),w=$('#rw');if(!n||!w)return;const r=n.getBoundingClientRect(),p=document.createElement('i');p.className='rp';p.style.left=e.clientX-r.left+'px';p.style.top=e.clientY-r.top+'px';p.onanimationend=()=>p.remove();w.appendChild(p)});
+function go(k,tap){view=k;document.querySelectorAll('#nv .ni').forEach(b=>{const on=b.dataset.k==k;b.classList.toggle('on',on);on?b.setAttribute('aria-current','page'):b.removeAttribute('aria-current');if(on&&tap){const ic=b.querySelector('.ic');ic.className='ic';void ic.offsetWidth;ic.classList.add('fx-'+b.dataset.fx)}});dropTo(k);({cal:vCal,tasks:vTasks,add:vAdd,load:vLoad,plan:vPlan})[k]()}
+const tk=id=>D.tasks.find(t=>t.id==id);
+function vCal(){const y=cm.getFullYear(),mo=cm.getMonth(),f=new Date(y,mo,1).getDay(),n=new Date(y,mo+1,0).getDate();let c=WD().map(x=>`<div class="h">${x}</div>`).join('');
+ for(let i=0;i<f;i++)c+='<div></div>';
+ for(let d=1;d<=n;d++){const s=iso(new Date(y,mo,d)),due=D.tasks.filter(t=>t.due==s&&!t.done),h=D.plan.filter(b=>b.date==s).reduce((a,b)=>a+b.h,0);
+  c+=`<div class="day ${s==today()?'t':''} ${s==sel?'s':''}" onclick="sel='${s}';vCal()"><b>${d}</b> ${h?`<span class="hrs">${h}ชม.</span>`:''}${due.map(t=>`<span class="chip" style="background:${col(t.subject)}">${esc(t.title)}</span>`).join('')}</div>`}
+ const bl=D.plan.filter(b=>b.date==sel),dd=D.tasks.filter(t=>t.due==sel);
+ $('#v').innerHTML=`<div class="grid" style="grid-template-columns:repeat(auto-fit,minmax(300px,1fr))"><div class="card" style="grid-column:span 2;min-width:0"><div class="row" style="border:0;padding-top:0"><h2 style="flex:1">${mn()[mo]} ${L=='en'?y:y+543}</h2><button class="btn o" onclick="cm=new Date(${y},${mo-1},1);vCal()">‹</button><button class="btn o" onclick="cm=new Date(${y},${mo+1},1);vCal()">›</button></div><div class="cal">${c}</div></div>
+ <div class="card"><h2>${fmt(sel)}</h2><p class="sub">${dt(sel).toLocaleDateString(LOC(),{weekday:'long'})}</p>${dd.map(t=>`<div class="warn">ส่งวันนี้: ${esc(t.title)}</div>`).join('')}${bl.length?bl.map(b=>{const t=tk(b.tid);return t?`<label class="row" style="margin:0;color:var(--ink);font-size:14px;cursor:pointer"><input type="checkbox" style="width:auto" ${b.done?'checked':''} onchange="tgl('${b.id}')"><span class="dot" style="background:${col(t.subject)}"></span><span style="flex:1">${esc(b.step)}<br><small style="color:var(--mut)">${esc(t.title)}</small></span><span class="tag">${b.h} ชม.</span></label>`:''}).join(''):'<p class="sub">ไม่มีงานที่จัดไว้ในวันนี้</p>'}${bl.some(b=>b.h>=1.5)?'<p class="sub" style="margin-top:12px">💡 พักสั้น ๆ 10 นาทีทุกชั่วโมง</p>':''}</div></div>`}
+const tgl=id=>{const b=D.plan.find(x=>x.id==id);b.done=!b.done;save();vCal()};
+function vTasks(){const g={};D.tasks.forEach(t=>(g[t.subject||'ไม่ระบุวิชา']??=[]).push(t));const ks=Object.keys(g);
+ $('#v').innerHTML=`<h2>งานของฉัน</h2><p class="sub">เลื่อนเมาส์เพื่อเอียงกระจก · คลิกเพื่อเปิดแฟ้ม · คลิกงานเพื่อดูรายละเอียด</p>${ks.length?`<div class="folders">${ks.map(s=>{const L=g[s].sort((a,b)=>a.due.localeCompare(b.due)).slice(0,4),n=L.length;return`<div class="fd" style="--h:${hue(s)}"><div class="bk"></div><div class="fs">${L.map((t,i)=>`<button class="sh" style="--s:${n<2?0:i/(n-1)*2-1};--d:${n-1-i};z-index:${i+1}" onclick="openT(${t.id})"><b>${t.done?'✓ ':''}${esc(t.title)}</b><small>ส่ง ${fmt(t.due)} · ${t.hours} ชม.</small><i class="ln" style="width:85%"></i><i class="ln" style="width:60%"></i><i class="ln" style="width:75%"></i></button>`).join('')}</div><div class="fr" tabindex="0" role="button" aria-label="เปิดแฟ้ม ${esc(s)}" onclick="this.parentNode.classList.toggle('o')" onkeydown="if(event.key=='Enter'||event.key==' '){event.preventDefault();this.click()}"><b>${esc(s)}</b><small>${g[s].length} งาน</small></div></div>`}).join('')}</div>`:'<div class="card">ยังไม่มีงาน — ไปที่ “เพิ่มงาน”</div>'}`}
+function openT(id){const t=tk(id);$('#mc').innerHTML=`<h2>${esc(t.title)}</h2><p class="sub"><span class="tag">${esc(t.subject)}</span> ส่ง ${fmt(t.due)} · ${t.hours} ชม. · ความยาก ${t.diff}/5</p><p style="white-space:pre-wrap">${esc(t.notes)||'—'}</p><div style="display:flex;gap:8px;margin-top:16px"><button class="btn g" onclick="done(${id})">${t.done?'ยกเลิกเสร็จ':'ทำเสร็จแล้ว'}</button><button class="btn o" onclick="del(${id})">ลบ</button><button class="btn o" onclick="$('#md').classList.remove('on')">ปิด</button></div>`;$('#md').classList.add('on')}
+const done=id=>{const t=tk(id);t.done=!t.done;save();replan0()},del=id=>{D.tasks=D.tasks.filter(t=>t.id!=id);D.plan=D.plan.filter(b=>b.tid!=id);save();replan0()};
+const replan0=()=>{$('#md').classList.remove('on');schedule(true);go(view)};
+$('#md').onclick=e=>{if(e.target.id=='md')$('#md').classList.remove('on')};
+function vAdd(){$('#v').innerHTML=`<div class="grid g2"><div class="card"><h2>AI อ่านรายละเอียดงาน</h2><p class="sub">วางข้อความโจทย์ หรืออัปโหลดไฟล์ .txt/.md ที่ได้รับอนุญาตให้ใช้ AI — ระบบดึงชื่องาน วิชา วันส่ง และข้อกำหนดให้</p><textarea id="tx" rows="9" placeholder="วิชา: การตลาดดิจิทัล&#10;งาน: รายงานวิเคราะห์แบรนด์&#10;กำหนดส่ง 20 พ.ย. 2569&#10;- ความยาว 10 หน้า&#10;- อ้างอิง APA"></textarea><div style="display:flex;gap:8px;margin-top:10px"><label class="btn o" style="margin:0;color:var(--ink);cursor:pointer">อัปโหลดไฟล์<input type="file" accept=".txt,.md" hidden onchange="rd(this)"></label><button class="btn g" onclick="ai()">✨ ดึงข้อมูล</button></div></div>
+ <div class="card"><h2>ข้อมูลงาน</h2><p class="sub">ตรวจสอบและแก้ไขก่อนบันทึก</p><label>ชื่องาน</label><input id="f1"><label>วิชา</label><input id="f2"><label>วันส่ง</label><input id="f3" type="date"><div class="grid" style="grid-template-columns:1fr 1fr"><div><label>ใช้เวลา (ชม.)</label><input id="f4" type="number" min="0.5" step="0.5" value="4"></div><div><label>ความยาก (1-5)</label><input id="f5" type="number" min="1" max="5" value="3"></div></div><label>ข้อกำหนดสำคัญ</label><textarea id="f6" rows="3"></textarea><button class="btn g" style="margin-top:14px;width:100%" onclick="addT()">บันทึกและจัดตาราง</button></div></div>`}
+function rd(i){const f=i.files[0];if(!f)return;const r=new FileReader();r.onload=()=>{$('#tx').value=String(r.result).slice(0,8000);ai()};r.readAsText(f)}
+function ai(){const x=extract($('#tx').value);$('#f1').value=x.title;$('#f2').value=x.subject;$('#f3').value=x.due;$('#f4').value=x.hours;$('#f6').value=x.notes}
+function addT(){const t={id:D.n++,title:$('#f1').value.trim(),subject:$('#f2').value.trim()||'ไม่ระบุวิชา',due:$('#f3').value,hours:+$('#f4').value||1,diff:Math.min(5,Math.max(1,+$('#f5').value||3)),notes:$('#f6').value};if(!t.title||!t.due)return alert(tr('กรุณากรอกชื่องานและวันส่ง'));D.tasks.push(t);schedule(true);go('plan')}
+function vLoad(){const W=loadWeeks(),bad=W.filter(w=>w.cap&&w.dem/w.cap>.85);
+ $('#v').innerHTML=`<h2>ภาระงานรายสัปดาห์</h2><p class="sub">เปรียบเทียบชั่วโมงที่ต้องใช้ (ถ่วงด้วยความยาก) กับเวลาว่างของคุณ</p>${bad.length?bad.map(w=>`<div class="warn">⚠ สัปดาห์ ${fmt(w.s)} ภาระสูงผิดปกติ (${Math.round(w.dem/w.cap*100)}% ของเวลาว่าง) — ควรเริ่มเตรียม ${fmt(add(w.s,-7))} · ${Object.keys(w.tasks).map(esc).join(', ')}</div>`).join(''):'<div class="ok">ภาระงานอยู่ในระดับที่จัดการได้ 🎉</div>'}<div class="card" style="margin-top:14px">${W.map(w=>{const r=w.cap?w.dem/w.cap:0,c=r>.85?'var(--r)':r>.6?'var(--y)':'var(--c)';return`<div class="row"><div style="width:90px;font-size:13px">${fmt(w.s)}</div><div class="bar" style="flex:1"><i style="width:${Math.min(100,r*100)}%;background:${c}"></i></div><div style="width:110px;text-align:right;font-size:13px;color:var(--mut)">${w.dem.toFixed(1)}/${w.cap} ชม.</div></div>`}).join('')}</div>`}
+function vPlan(){const T=today(),days={};D.plan.filter(b=>b.date>=T).sort((a,b)=>a.date.localeCompare(b.date)).forEach(b=>(days[b.date]??=[]).push(b));
+ $('#v').innerHTML=`<div class="grid g2"><div class="card"><div class="row" style="border:0;padding-top:0"><h2 style="flex:1">แผนทำงาน</h2><button class="btn g" onclick="replan()">↻ จัดใหม่</button></div><p class="sub">แบ่งงานเป็นขั้นตอน เว้นเวลา 20% สำหรับเหตุไม่คาดคิด และพักทุกชั่วโมง</p>${Object.keys(days).slice(0,14).map(d=>`<div style="margin:10px 0 2px;font-weight:500">${dt(d).toLocaleDateString(LOC(),{weekday:'short'})} ${fmt(d)}</div>${days[d].map(b=>{const t=tk(b.tid);return t?`<div class="row" style="padding:6px 0"><span class="dot" style="background:${col(t.subject)}"></span><span style="flex:1;font-size:14px;${b.done?'text-decoration:line-through;opacity:.5':''}">${esc(b.step)} · <span style="color:var(--mut)">${esc(t.title)}</span></span><span class="tag">${b.h} ชม.</span></div>`:''}).join('')}`).join('')||'<p class="sub">ยังไม่มีแผน</p>'}</div>
+ <div class="grid" style="align-content:start"><div class="card"><h2>ทำไมเรียงแบบนี้</h2><p class="sub">AI อธิบายลำดับความสำคัญ</p><div style="font-size:14px;white-space:pre-wrap">${D.explain.map(esc).join('\n\n')||'—'}</div></div>
+ <div class="card"><h2>เวลาว่างต่อวัน (ชม.)</h2><p class="sub">แก้ไขแล้วกด “จัดใหม่”</p><div class="free">${WD().map((x,i)=>`<div><div class="hrs" style="text-align:center">${x}</div><input type="number" min="0" max="16" step="0.5" value="${D.free[i]}" onchange="D.free[${i}]=+this.value;save()"></div>`).join('')}</div></div>
+ <div class="card"><h2>🚨 มีงานด่วน?</h2><p class="sub">เพิ่มงานแล้วระบบจะจัดใหม่ทั้งหมดให้</p><button class="btn o" onclick="go('add')">เพิ่มงานด่วน</button></div></div></div>`}
+const m=ld('sp_me',null);m&&ld('sp_users',{})[m]?boot(m):authUI(false);
+</script></body></html>
